@@ -3,7 +3,7 @@ import { FaLinkedin } from 'react-icons/fa';
 
 const Footer = () => {
   return (
-    <footer className="bg-gray-50 text-center py-6 text-sm font-medium text-gray-700">
+    <footer className="bg-gray-50 dark:bg-gray-900 text-center py-6 text-sm font-medium text-gray-700 dark:text-white">
       <div className="flex flex-col md:flex-row items-center justify-center gap-2 md:gap-6">
         <p>&copy; {new Date().getFullYear()} Cyberdiligent</p>
         <p>(682) 990-5950</p>
