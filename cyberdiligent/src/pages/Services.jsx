@@ -62,15 +62,15 @@ export default function Services() {
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-teal-50 to-white text-gray-900 font-sans p-6 md:p-12">
+    <div className="min-h-screen bg-gradient-to-br from-teal-50 to-white dark:from-gray-900 dark:to-teal-900 text-gray-900 font-sans p-6 md:p-12">
       <div className="text-center mb-16">
-        <h1 className="text-5xl font-extrabold text-gray-800 mb-4">
+        <h1 className="text-5xl font-extrabold text-gray-800 dark:text-gray-50 mb-4">
           Our Services
         </h1>
         <p className="text-teal-600 text-lg font-medium mb-2">
           Expert guidance. Real results.
         </p>
-        <p className="text-lg max-w-3xl mx-auto leading-relaxed">
+        <p className="text-lg max-w-3xl mx-auto leading-relaxed dark:text-gray-50">
           Unlock growth with tailored cybersecurity, risk, and AI/ML governance
           services. Our advisors give you clarity to act, control to adapt, and
           confidence to grow securely.
@@ -87,7 +87,7 @@ export default function Services() {
             initial="hidden"
             whileInView="show"
             viewport={{ once: true }}
-            className={`flex flex-col lg:flex-row ${
+            className={`flex flex-col lg:flex-row dark:bg-gray-100 ${
               i % 2 !== 0 ? "lg:flex-row-reverse" : ""
             } items-center gap-8 bg-white rounded-2xl shadow-xl overflow-hidden`}
           >
