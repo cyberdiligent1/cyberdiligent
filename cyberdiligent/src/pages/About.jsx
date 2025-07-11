@@ -24,7 +24,6 @@ const About = () => {
 
   return (
     <div className="bg-gradient-to-br from-green-300 to-blue-900 min-h-screen text-white font-sans">
-      {/* Hero Section */}
       <section className="relative">
         <div className="absolute inset-0 bg-black bg-opacity-60" />
         <img 
@@ -59,7 +58,7 @@ const About = () => {
           >
             <Link 
               to="/contact" 
-              className="inline-flex items-center bg-cyber-green text-white text-sm font-bold px-6 py-3 rounded-lg hover:bg-opacity-90 transition-colors"
+              className="inline-flex items-center  bg-gradient-to-r from-green-400 to-teal-500 hover:from-green-500 hover:to-teal-600 text-white font-semibold px-8 py-3 rounded-xl shadow-md transition duration-200"
             >
               Contact Us
               <ChevronRight className="ml-2 h-4 w-4" />
@@ -68,8 +67,7 @@ const About = () => {
         </div>
       </section>
 
-      {/* Founder Section */}
-      <section className="bg-white text-gray-900 py-20 px-6">
+      <section className="bg-gradient-to-br from-teal-50 to-white dark:from-gray-900 dark:to-teal-900  text-gray-900 py-20 px-6">
         <div className="max-w-5xl mx-auto">
           <motion.div 
             className="grid grid-cols-1 md:grid-cols-3 gap-12 items-center"
@@ -86,15 +84,15 @@ const About = () => {
               />
             </div>
             <div className="md:col-span-2">
-              <h2 className="text-2xl font-bold text-[#0a1a56] mb-1">Russell Okoth</h2>
-              <h3 className="text-xl font-bold text-[#0a1a56] mb-6">
+              <h2 className="text-2xl font-bold text-[#0a1a56] dark:text-teal-500 mb-1">Russell Okoth</h2>
+              <h3 className="text-xl font-bold text-[#0a1a56] dark:text-teal-500 mb-6">
                 Founder & Principal Consultant, Cyberdiligent
               </h3>
-              <p className="text-base text-gray-600 mb-6 max-w-xl leading-relaxed">
+              <p className="text-base text-gray-600 dark:text-gray-50 mb-6 max-w-xl leading-relaxed">
                 With over 15 years in cybersecurity leadership, Russell brings unparalleled expertise 
                 in building resilient security frameworks for Fortune 500 companies and startups alike.
               </p>
-              <blockquote className="border-l-4 border-cyber-green pl-4 py-2 text-gray-700 italic">
+              <blockquote className="border-l-4 border-teal-500 dark:text-gray-50 pl-4 py-2 text-gray-700 italic">
                 "Cybersecurity isn't just about avoiding harm—it's about spearheading resilience, 
                 enabling innovation, and driving sustainable business growth."
               </blockquote>
@@ -103,8 +101,7 @@ const About = () => {
         </div>
       </section>
 
-      {/* Approach Section */}
-      <section className="py-20 px-6 bg-gradient-to-br from-blue-800 to-teal-700">
+      <section className="py-20 px-6 bg-gradient-to-br from-green-300 to-blue-900 dark:from-teal-600 dark:to-gray-800">
         <div className="max-w-5xl mx-auto">
           <motion.h2 
             className="text-3xl font-bold text-center mb-16 text-white"
@@ -118,51 +115,34 @@ const About = () => {
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
             <ApproachCard 
-              icon={<BarChart2 className="text-cyber-green h-8 w-8" />}
+              icon={<BarChart2 className="text-teal-500 h-8 w-8" />}
               title="The Strategist"
               description="Aligning security initiatives with business objectives to create resilient frameworks that support growth and innovation."
               delay={0.1}
             />
             
             <ApproachCard 
-              icon={<Cpu className="text-cyber-green h-8 w-8" />}
+              icon={<Cpu className="text-teal-500 h-8 w-8" />}
               title="The Technologist"
               description="Implementing cutting-edge security technologies with architecture designed for tomorrow's threats."
               delay={0.2}
             />
             
             <ApproachCard 
-              icon={<UserCircle className="text-cyber-green h-8 w-8" />}
+              icon={<UserCircle className="text-teal-500 h-8 w-8" />}
               title="The Advisor"
               description="Providing actionable guidance to navigate complex regulatory landscapes and emerging threats."
               delay={0.3}
             />
             
             <ApproachCard 
-              icon={<ShieldCheck className="text-cyber-green h-8 w-8" />}
+              icon={<ShieldCheck className="text-teal-500 h-8 w-8" />}
               title="The Guardian"
               description="Proactive protection through continuous monitoring, threat intelligence, and incident readiness."
               delay={0.4}
             />
           </div>
 
-          <motion.div 
-            className="text-center mt-16"
-            variants={fadeUp}
-            initial="hidden"
-            whileInView="show"
-            viewport={{ once: true }}
-            transition={{ delay: 0.5 }}
-          >
-            <p className="text-xl font-extrabold text-white">Ready to strengthen your security?</p>
-            <p className="text-2xl font-bold text-cyber-green mt-4">(682) 990-5950</p>
-            <Link 
-              to="/contact" 
-              className="mt-6 inline-block bg-white text-gray-900 font-bold px-8 py-3 rounded-lg shadow-lg hover:bg-gray-100 transition-colors"
-            >
-              Schedule Consultation
-            </Link>
-          </motion.div>
         </div>
       </section>
     </div>
