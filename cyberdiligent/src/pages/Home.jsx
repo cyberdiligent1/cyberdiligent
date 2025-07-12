@@ -2,6 +2,11 @@ import React, { useState, useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 import { ShieldCheck, Cpu, AlertCircle, Scale, MessageCircle, X, Bot } from "lucide-react";
 import { Link } from "react-router-dom";
+import { CohereClient } from "cohere-ai";
+
+const cohere = new CohereClient({
+  token: import.meta.env.VITE_COHERE_API_KEY,
+});
 
 const fadeUp = {
   hidden: { opacity: 0, y: 30 },
@@ -76,6 +81,18 @@ const SecurityChatWidget = () => {
   const messagesEndRef = useRef(null);
   const inputRef = useRef(null);
 
+  const companyResponses = {
+    "who are you": "I'm Cyberdiligent's AI security assistant. I can help answer questions about our services, cybersecurity best practices, and risk management.",
+    "cyberdiligent": "Cyberdiligent is a Dallas-based Information Security Governance & Risk Advisory firm founded in 2017. We specialize in:\n- Cybersecurity strategy\n- AI/ML governance\n- Incident response\n- Risk & compliance",
+    "services": "We offer:\n1. Strategic Advisory & Governance\n2. Defense, Detection & Response\n3. Risk, Compliance & Trust\n\nVisit our Services page for details.",
+    "contact": "You can reach us by:\n- Filling out the contact form on our website\n- Email: info@cyberdiligent.com\n- Phone: (555) 123-4567\n\nWe respond within 1 business day.",
+    "about": "Cyberdiligent helps organizations navigate cybersecurity challenges through our 3 C's Philosophy:\n1. The Strategist\n2. The Technologist\n3. The Advisor\n4. The Guardian",
+    "founder": "Russell Okoth founded Cyberdiligent in 2017. With 15+ years in cybersecurity leadership, he's helped Fortune 500 companies and startups build resilient security frameworks.",
+    "location": "Our headquarters is in Dallas, Texas, but we serve clients nationwide across various industries.",
+    "philosophy": "Our 3 C's Philosophy:\n1. Committed to proactive strategies\n2. Comprehensive security solutions\n3. Client-focused advisory services",
+    "help": "I can help with:\n- Cybersecurity questions\n- Information about Cyberdiligent\n- Security best practices\n\nTry asking about our services or specific security topics."
+  };
+
   const securityQuestions = [
     "Explain GDPR compliance requirements",
     "What is a zero-trust architecture?",
@@ -84,62 +101,20 @@ const SecurityChatWidget = () => {
     "AI governance frameworks for healthcare"
   ];
 
-  const responses = {
-    security: {
-      "information security": "Information security focuses on protecting data from unauthorized access and ensuring confidentiality, integrity, and availability. It includes strategies like encryption, access control, and threat monitoring.",
-      "privacy by design": "Privacy-by-design is an approach where privacy is built into systems and processes from the beginning, not added later. It ensures personal data is handled with care by default.",
-      "gdpr": "GDPR requires protecting EU citizens' data through consent management, breach notifications, data minimization, and more.",
-      "hipaa": "HIPAA is a U.S. regulation that ensures the privacy and security of health information.",
-      "pci": "PCI DSS is a standard for securing credit card data and transactions.",
-      "glba": "GLBA requires financial institutions to protect customer data through security policies and safeguards.",
-      "risk-based controls": "Risk-based controls prioritize security efforts based on identified threats and business impact, allowing organizations to focus resources where most needed.",
-
-      "ai governance": "AI/ML governance involves setting frameworks to ensure ethical, secure, and transparent AI systems. It includes risk assessments, transparency reports, and bias audits.",
-      "saas security": "Securing SaaS involves identity access management, data encryption, vendor vetting, and continuous monitoring.",
-      "ai bias": "Addressing AI bias requires data audits, fairness metrics, and accountability reviews throughout the ML lifecycle.",
-      "secure by default": "Secure-by-default means designing systems that are secure out of the box, reducing reliance on users to configure settings safely.",
-
-      "incident response": "An incident response plan outlines how to detect, respond to, and recover from security incidents. It ensures quick action and minimizes damage.",
-      "ransomware": "To respond to ransomware: isolate the system, assess the breach, report the incident, and restore from backups. Never pay the ransom.",
-      "breach disclosure": "Breach disclosures involve notifying affected parties, regulators, and stakeholders after a confirmed security breach — often required by law.",
-      "tabletop exercise": "A tabletop exercise simulates a cyber incident so teams can practice their response plans and improve coordination.",
-
-      "risk management": "Cyber risk management means identifying and mitigating threats to your digital assets. It includes risk assessments, mitigation planning, and compliance alignment.",
-      "nist": "NIST Cybersecurity Framework is a guideline for managing and reducing cybersecurity risk across industries.",
-      "iso 27001": "ISO 27001 is an international standard for managing information security via a comprehensive ISMS.",
-      "vendor risk": "Vendor risk management ensures that third-party partners don't expose your organization to unnecessary cybersecurity threats.",
-      "cyber due diligence": "Cyber due diligence is the process of assessing an organization's cybersecurity posture during mergers and acquisitions.",
-      "risk appetite": "Risk appetite is the amount of risk an organization is willing to accept while pursuing its objectives.",
-
-      "default": "I can answer questions about security, AI governance, compliance frameworks, incident response, and risk management. Try asking about GDPR, AI risks, or risk appetite!"
-    },  
-    website: {
-    "services": "We offer services in cybersecurity, AI/ML governance, incident response, and compliance consulting.",
-    "contact": "You can reach us via the contact form on our Contact page or book a consultation directly.",
-    "about": "Cyberdiligent is a strategic advisory firm focusing on cybersecurity, risk, and AI governance.",
-    "cyberdiligent": "Cyberdiligent is a Dallas-based Information Security Governance & Risk Advisory firm, founded in 2017 by Russell Okoth focusing on cybersecurity, risk, and AI governance.",
-    "default": "Learn more by visiting our homepage or services section."
-     },
-    greetings: [
-      "Hello! I'm your cybersecurity assistant. How can I help you with security questions today?",
-      "Hi there! I'm here to help with your security and compliance questions.",
-      "Greetings! Ask me anything about cybersecurity best practices."
-    ],
-    general: [
-      "I'm focused on cybersecurity topics. Could you ask me something about security, compliance, or risk management?",
-      "As a security assistant, I'm best equipped to answer questions about cybersecurity. Try asking about security frameworks or best practices.",
-      "I specialize in security-related questions. Maybe ask me about GDPR, zero trust, or cloud security?"
-    ]
-  };
+  const greetings = [
+    "Hello! I'm Cyberdiligent's security assistant. How can I help you today?",
+    "Hi there! I'm here to help with your security and compliance questions.",
+    "Greetings! Ask me anything about cybersecurity or our services."
+  ];
 
   useEffect(() => {
     if (isOpen && messages.length === 0) {
       setMessages([{
-        text: responses.greetings[0],
+        text: greetings[0],
         sender: 'bot'
       }]);
     }
-  }, [isOpen, messages.length, responses.greetings]);
+  }, [isOpen, messages.length]);
 
   useEffect(() => {
     if (isOpen) {
@@ -151,57 +126,78 @@ const SecurityChatWidget = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages, isLoading]);
 
-  const getRandomResponse = (category) => {
-    const options = responses[category];
-    return options[Math.floor(Math.random() * options.length)];
+  const handleSend = async () => {
+    if (!input.trim() || isLoading) return;
+
+    const userMessage = { text: input, sender: 'user' };
+    const updatedMessages = [...messages, userMessage];
+    setMessages(updatedMessages);
+    setInput('');
+    setIsLoading(true);
+
+    const lowerInput = input.toLowerCase();
+    const companyQuestion = Object.keys(companyResponses).find(question => 
+      lowerInput.includes(question)
+    );
+
+    if (companyQuestion) {
+      setTimeout(() => {
+        setMessages([...updatedMessages, {
+          text: companyResponses[companyQuestion],
+          sender: 'bot'
+        }]);
+        setIsLoading(false);
+      }, 300);
+    } 
+    else if (/^(hi|hello|hey)/i.test(input)) {
+      setTimeout(() => {
+        setMessages([...updatedMessages, {
+          text: greetings[Math.floor(Math.random() * greetings.length)],
+          sender: 'bot'
+        }]);
+        setIsLoading(false);
+      }, 300);
+    }
+    else {
+      try {
+        const chatHistory = updatedMessages.map(msg => ({
+          role: msg.sender === 'user' ? "USER" : "CHATBOT",
+          message: msg.text
+        }));
+
+        const response = await cohere.chat({
+          message: input,
+          chatHistory: chatHistory,
+          model: 'command',
+          temperature: 0.3,
+          promptTruncation: 'AUTO',
+          connectors: [],
+          documents: []
+        });
+
+        setMessages([...updatedMessages, {
+          text: response.text,
+          sender: 'bot'
+        }]);
+      } catch (error) {
+        setMessages([...updatedMessages, {
+          text: "I'm having technical difficulties. Please try again later or contact us directly.",
+          sender: 'bot'
+        }]);
+      } finally {
+        setIsLoading(false);
+      }
+    }
   };
 
-const handleSend = async () => {
-  if (!input.trim() || isLoading) return;
-
-  const userMessage = { text: input, sender: 'user' };
-  const updatedMessages = [...messages, userMessage];
-  setMessages(updatedMessages);
-  setInput('');
-  setIsLoading(true);
-
-  setTimeout(() => {
-    const lowerInput = input.toLowerCase();
-    let responseText = responses.general[0]; 
-
-    if (/^(hi|hello|hey|greetings|good\s(morning|afternoon|evening))\b/i.test(lowerInput)) {
-      responseText = getRandomResponse('greetings');
-    }
-
-    else if (Object.keys(responses.security).some(key => lowerInput.includes(key))) {
-      const key = Object.keys(responses.security).find(k => lowerInput.includes(k));
-      responseText = responses.security[key] || responses.security.default;
-    }
-
-    else if (Object.keys(responses.website).some(key => lowerInput.includes(key))) {
-      const key = Object.keys(responses.website).find(k => lowerInput.includes(k));
-      responseText = responses.website[key] || responses.website.default;
-    }
-
-    else {
-      responseText = getRandomResponse('general');
-    }
-
-    setMessages([...updatedMessages, {
-      text: responseText,
-      sender: 'bot'
-    }]);
-    setIsLoading(false);
-  }, 800);
-};
-
   return (
-    <div className="fixed bottom-2 right-6 z-50 flex flex-col items-end">
+    <div className="fixed bottom-2 right-2 sm:right-6 z-50 flex flex-col items-end">
       {isOpen && (
         <motion.div
           initial={{ opacity: 0, scale: 0.8 }}
           animate={{ opacity: 1, scale: 1 }}
-          className="w-[28rem] h-[32rem] bg-white dark:bg-gray-800 rounded-xl shadow-xl flex flex-col mb-4 border-2 border-teal-400"
+          className="w-[90vw] sm:w-[28rem] h-[32rem] bg-white dark:bg-gray-800 rounded-xl shadow-xl flex flex-col mb-4 border-2 border-teal-400"
+          style={{ maxWidth: 'calc(100vw - 1rem)' }}
         >
           <div className="p-4 bg-gradient-to-r from-green-500 to-teal-600 rounded-t-xl text-white flex items-center gap-2">
             <Bot size={20} />
@@ -265,6 +261,23 @@ const handleSend = async () => {
                     </button>
                   ))}
                 </div>
+                <h4 className="text-xs font-semibold text-gray-500 dark:text-gray-400 mt-4 mb-2">
+                  OR ABOUT US:
+                </h4>
+                <div className="flex flex-wrap gap-2">
+                  {["Who are Cyberdiligent?", "What services do you offer?", "How to contact?"].map((question, i) => (
+                    <button
+                      key={i}
+                      onClick={() => {
+                        setInput(question);
+                        setTimeout(() => inputRef.current?.focus(), 100);
+                      }}
+                      className="text-xs bg-purple-100 dark:bg-purple-900 hover:bg-purple-200 dark:hover:bg-purple-800 px-2 py-1 rounded-lg transition-colors text-purple-800 dark:text-purple-100"
+                    >
+                      {question}
+                    </button>
+                  ))}
+                </div>
               </div>
             )}
             <div ref={messagesEndRef} />
@@ -284,7 +297,7 @@ const handleSend = async () => {
             <button 
               onClick={handleSend}
               disabled={isLoading || !input.trim()}
-              className={`bg-gradient-to-r from-green-500 to-teal-600 text-white px-4  rounded-r-lg transition-opacity ${
+              className={`bg-gradient-to-r from-green-500 to-teal-600 text-white px-4 rounded-r-lg transition-opacity ${
                 isLoading || !input.trim() ? 'opacity-50 cursor-not-allowed' : 'hover:opacity-90'
               }`}
             >
