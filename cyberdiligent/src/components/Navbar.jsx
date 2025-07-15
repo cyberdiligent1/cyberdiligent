@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import { NavLink } from "react-router-dom";
 import { Menu, X } from "lucide-react";
-import logo from "../assets/logo.jpg";
+import logo from "../assets/logo.png";
+import logodark from "../assets/whitelogo.png";
 import { motion, AnimatePresence } from "framer-motion";
 import ThemeToggle from "./theme/ThemeToggle";
 
@@ -20,9 +21,13 @@ const Navbar = () => {
           <img
             src={logo}
             alt="Cyberdiligent logo"
-            className="w-10 h-10 object-contain"
+            className="w-48 h-10 object-contain dark:hidden"
           />
-          <span className="text-xl font-semibold dark:text-white">Cyberdiligent</span>
+          <img
+            src={logodark}
+            alt="Cyberdiligent logo"
+            className="w-48 h-10 object-contain hidden dark:block"
+          />
         </div>
 
         <button
@@ -59,9 +64,10 @@ const Navbar = () => {
                 Contact Us
               </NavLink>
             </li>
-            <li><ThemeToggle /></li>
+            <li>
+              <ThemeToggle />
+            </li>
           </ul>
-          
         </nav>
       </div>
 
@@ -121,7 +127,9 @@ const Navbar = () => {
                   Contact Us
                 </NavLink>
               </li>
-               <li><ThemeToggle /></li>
+              <li>
+                <ThemeToggle />
+              </li>
             </ul>
           </motion.nav>
         )}
